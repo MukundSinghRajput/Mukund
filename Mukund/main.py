@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+import zipfile
 from pathlib import Path
 from Mukund.core.database import *
 
@@ -57,3 +58,19 @@ class Mukund:
         """
         collection_path = self.db_path / f"{collection_name}.json"
         return Base(collection_path)
+    
+    def backup(self, path) -> None:
+        """
+        Create a backup of the entire Mukund database by zipping all collection files.
+
+        Parameters:
+        - path: Path to the backup zip file e.g Mukund.zip .
+
+        Returns:
+        - A zip file 
+        """
+        with zipfile.ZipFile(Path(path), 'w') as zip_file:
+            zip_file.write(self.db_path, arcname=self.db_path.name)
+            for collection_file in self.db_path.glob("*.json"):
+                arcname = f"{self.db_path.name}/{collection_file.name}"
+                zip_file.write(collection_file, arcname=arcname)
