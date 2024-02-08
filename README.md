@@ -3,6 +3,9 @@
     <br>
 </p>
 
+## Usage
+To initialize storage 
+
 ```python 
 
 from Mukund import Mukund 
